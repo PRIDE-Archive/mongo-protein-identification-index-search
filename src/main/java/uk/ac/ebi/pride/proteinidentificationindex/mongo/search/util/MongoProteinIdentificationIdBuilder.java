@@ -1,10 +1,6 @@
-package uk.ac.ebi.pride.proteinidentificationindex.search.util;
+package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util;
 
-/**
- * @author Jose A. Dianes
- * @version $Id$
- */
-public class ProteinIdentificationIdBuilder {
+public class MongoProteinIdentificationIdBuilder {
 
     public static final String SEPARATOR = "_%_%_";
 

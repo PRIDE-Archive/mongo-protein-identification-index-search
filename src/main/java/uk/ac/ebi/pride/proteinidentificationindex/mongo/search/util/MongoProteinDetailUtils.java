@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.proteinidentificationindex.search.util;
+package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util;
 
 import java.util.List;
 
@@ -7,14 +7,12 @@ import java.util.List;
  * Date: 09/07/2014
  * Time: 16:23
  */
-public class ProteinDetailUtils {
+public class MongoProteinDetailUtils {
 
     public static final String NAME = "NAME####";
 
     public static String extractInformationByType(List<String> description, String type){
-
         String info = null;
-
         if(description != null){
             for (String s : description){
                 if(s.startsWith(type)){
@@ -22,7 +20,6 @@ public class ProteinDetailUtils {
                 }
             }
         }
-
         return info;
     }
 

@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.proteinidentificationindex.search.model;
+package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model;
 
 import org.apache.solr.client.solrj.beans.Field;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
@@ -9,55 +9,51 @@ import uk.ac.ebi.pride.proteincatalogindex.search.util.ProteinDetailUtils;
 
 import java.util.*;
 
-/**
- * @author Jose A. Dianes
- * @version $Id$
- */
-public class ProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
+public class MongoProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
 
-    @Field(ProteinIdentificationFields.ID)
+    @Field(MongoProteinIdentificationFields.ID)
     private String id;
 
-    @Field(ProteinIdentificationFields.SUBMITTED_ACCESSION)
+    @Field(MongoProteinIdentificationFields.SUBMITTED_ACCESSION)
     private String submittedAccession;
 
-    @Field(ProteinIdentificationFields.ACCESSION)
+    @Field(MongoProteinIdentificationFields.ACCESSION)
     private String accession;
 
-    @Field(ProteinIdentificationFields.UNIPROT_MAPPING)
+    @Field(MongoProteinIdentificationFields.UNIPROT_MAPPING)
     private String uniprotMapping;
 
-    @Field(ProteinIdentificationFields.ENSEMBL_MAPPING)
+    @Field(MongoProteinIdentificationFields.ENSEMBL_MAPPING)
     private String ensemblMapping;
 
-    @Field(ProteinIdentificationFields.OTHER_MAPPINGS)
+    @Field(MongoProteinIdentificationFields.OTHER_MAPPINGS)
     private Set<String> otherMappings;
 
-    @Field(ProteinIdentificationFields.SUBMITTED_SEQUENCE)
+    @Field(MongoProteinIdentificationFields.SUBMITTED_SEQUENCE)
     private String submittedSequence;
 
-    @Field(ProteinIdentificationFields.INFERRED_SEQUENCE)
+    @Field(MongoProteinIdentificationFields.INFERRED_SEQUENCE)
     private String inferredSequence;
 
-    @Field(ProteinIdentificationFields.DESCRIPTION)
+    @Field(MongoProteinIdentificationFields.DESCRIPTION)
     private List<String> description;
 
-    @Field(ProteinIdentificationFields.AMBIGUITY_GROUP)
+    @Field(MongoProteinIdentificationFields.AMBIGUITY_GROUP)
     private List<String> ambiguityGroupSubmittedAccessions;
 
-    @Field(ProteinIdentificationFields.MODIFICATIONS)
+    @Field(MongoProteinIdentificationFields.MODIFICATIONS)
     private List<String> modificationsAsString;
 
-    @Field(ProteinIdentificationFields.MOD_NAMES)
+    @Field(MongoProteinIdentificationFields.MOD_NAMES)
     private List<String> modificationNames;
 
-    @Field(ProteinIdentificationFields.MOD_ACCESSIONS)
+    @Field(MongoProteinIdentificationFields.MOD_ACCESSIONS)
     private List<String> modificationAccessions;
 
-    @Field(ProteinIdentificationFields.PROJECT_ACCESSION)
+    @Field(MongoProteinIdentificationFields.PROJECT_ACCESSION)
     private String projectAccession;
 
-    @Field(ProteinIdentificationFields.ASSAY_ACCESSION)
+    @Field(MongoProteinIdentificationFields.ASSAY_ACCESSION)
     private String assayAccession;
 
     public String getId() {
