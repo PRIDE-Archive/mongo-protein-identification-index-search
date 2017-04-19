@@ -1,6 +1,8 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model;
 
 import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinDetailProvider;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ProteinIdentificationProvider;
@@ -9,237 +11,223 @@ import uk.ac.ebi.pride.proteincatalogindex.search.util.ProteinDetailUtils;
 
 import java.util.*;
 
+@Document(collection = "psm")
 public class MongoProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
 
-    @Field(MongoProteinIdentificationFields.ID)
-    private String id;
+  @Id
+  private String id;
 
-    @Field(MongoProteinIdentificationFields.SUBMITTED_ACCESSION)
-    private String submittedAccession;
+  private String submittedAccession;
 
-    @Field(MongoProteinIdentificationFields.ACCESSION)
-    private String accession;
+  private String accession;
 
-    @Field(MongoProteinIdentificationFields.UNIPROT_MAPPING)
-    private String uniprotMapping;
+  private String uniprotMapping;
 
-    @Field(MongoProteinIdentificationFields.ENSEMBL_MAPPING)
-    private String ensemblMapping;
+  private String ensemblMapping;
 
-    @Field(MongoProteinIdentificationFields.OTHER_MAPPINGS)
-    private Set<String> otherMappings;
+  private Set<String> otherMappings;
 
-    @Field(MongoProteinIdentificationFields.SUBMITTED_SEQUENCE)
-    private String submittedSequence;
+  private String submittedSequence;
 
-    @Field(MongoProteinIdentificationFields.INFERRED_SEQUENCE)
-    private String inferredSequence;
+  private String inferredSequence;
 
-    @Field(MongoProteinIdentificationFields.DESCRIPTION)
-    private List<String> description;
+  private List<String> description;
 
-    @Field(MongoProteinIdentificationFields.AMBIGUITY_GROUP)
-    private List<String> ambiguityGroupSubmittedAccessions;
+  private List<String> ambiguityGroupSubmittedAccessions;
 
-    @Field(MongoProteinIdentificationFields.MODIFICATIONS)
-    private List<String> modificationsAsString;
+  private List<String> modificationsAsString;
 
-    @Field(MongoProteinIdentificationFields.MOD_NAMES)
-    private List<String> modificationNames;
+  private List<String> modificationNames;
 
-    @Field(MongoProteinIdentificationFields.MOD_ACCESSIONS)
-    private List<String> modificationAccessions;
+  private List<String> modificationAccessions;
 
-    @Field(MongoProteinIdentificationFields.PROJECT_ACCESSION)
-    private String projectAccession;
+  private String projectAccession;
 
-    @Field(MongoProteinIdentificationFields.ASSAY_ACCESSION)
-    private String assayAccession;
+  private String assayAccession;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getSubmittedAccession() {
-        return submittedAccession;
-    }
+  public String getSubmittedAccession() {
+    return submittedAccession;
+  }
 
-    public void setSubmittedAccession(String submittedAccession) {
-        this.submittedAccession = submittedAccession;
-    }
+  public void setSubmittedAccession(String submittedAccession) {
+    this.submittedAccession = submittedAccession;
+  }
 
-    public String getAccession() {
-        return accession;
-    }
+  public String getAccession() {
+    return accession;
+  }
 
-    public void setAccession(String accession) {
-        this.accession = accession;
-    }
+  public void setAccession(String accession) {
+    this.accession = accession;
+  }
 
-    @Override
-    public String getName() {
-        return ProteinDetailUtils.getNameFromDescription(description);
-    }
+  public String getName() {
+    return ProteinDetailUtils.getNameFromDescription(description);
+  }
 
-    public String getProjectAccession() {
-        return projectAccession;
-    }
+  public String getProjectAccession() {
+    return projectAccession;
+  }
 
-    public void setProjectAccession(String projectAccession) {
-        this.projectAccession = projectAccession;
-    }
+  public void setProjectAccession(String projectAccession) {
+    this.projectAccession = projectAccession;
+  }
 
-    public String getAssayAccession() {
-        return assayAccession;
-    }
+  public String getAssayAccession() {
+    return assayAccession;
+  }
 
-    public void setAssayAccession(String assayAccession) {
-        this.assayAccession = assayAccession;
-    }
+  public void setAssayAccession(String assayAccession) {
+    this.assayAccession = assayAccession;
+  }
 
-    public String getSubmittedSequence() {
-        return submittedSequence;
-    }
+  public String getSubmittedSequence() {
+    return submittedSequence;
+  }
 
-    public void setSubmittedSequence(String submittedSequence) {
-        this.submittedSequence = submittedSequence;
-    }
+  public void setSubmittedSequence(String submittedSequence) {
+    this.submittedSequence = submittedSequence;
+  }
 
-    public List<String> getDescription() {
-        return description;
-    }
+  public List<String> getDescription() {
+    return description;
+  }
 
-    public void setDescription(List<String> description) {
-        this.description = description;
-    }
+  public void setDescription(List<String> description) {
+    this.description = description;
+  }
 
-    public List<String> getAmbiguityGroupSubmittedAccessions() {
-        return ambiguityGroupSubmittedAccessions;
-    }
+  public List<String> getAmbiguityGroupSubmittedAccessions() {
+    return ambiguityGroupSubmittedAccessions;
+  }
 
-    public void setAmbiguityGroupSubmittedAccessions(List<String> ambiguityGroupSubmittedAccessions) {
-        this.ambiguityGroupSubmittedAccessions = ambiguityGroupSubmittedAccessions;
-    }
+  public void setAmbiguityGroupSubmittedAccessions(List<String> ambiguityGroupSubmittedAccessions) {
+    this.ambiguityGroupSubmittedAccessions = ambiguityGroupSubmittedAccessions;
+  }
 
-    public Iterable<ModificationProvider> getModifications() {
+  public Iterable<ModificationProvider> getModifications() {
 
-        List<ModificationProvider> modifications = new ArrayList<ModificationProvider>();
+    List<ModificationProvider> modifications = new ArrayList<ModificationProvider>();
 
-        if (modificationsAsString != null) {
-            for (String mod : modificationsAsString) {
-                if(!mod.isEmpty()) {
-                    modifications.add(ModificationHelper.convertFromString(mod));
-                }
-            }
+    if (modificationsAsString != null) {
+      for (String mod : modificationsAsString) {
+        if(!mod.isEmpty()) {
+          modifications.add(ModificationHelper.convertFromString(mod));
         }
-
-        return modifications;
+      }
     }
 
-    public void setModifications(List<ModificationProvider> modifications) {
+    return modifications;
+  }
 
-        if (modifications == null)
-            return;
+  public void setModifications(List<ModificationProvider> modifications) {
 
-        List<String> modificationsAsString = new ArrayList<String>();
-        List<String> modificationNames = new ArrayList<String>();
-        List<String> modificationAccessions = new ArrayList<String>();
+    if (modifications == null)
+      return;
 
-        for (ModificationProvider modification : modifications) {
-            modificationsAsString.add(ModificationHelper.convertToString(modification));
-            modificationAccessions.add(modification.getAccession());
-            modificationNames.add(modification.getName());
+    List<String> modificationsAsString = new ArrayList<String>();
+    List<String> modificationNames = new ArrayList<String>();
+    List<String> modificationAccessions = new ArrayList<String>();
+
+    for (ModificationProvider modification : modifications) {
+      modificationsAsString.add(ModificationHelper.convertToString(modification));
+      modificationAccessions.add(modification.getAccession());
+      modificationNames.add(modification.getName());
+    }
+
+    this.modificationsAsString = modificationsAsString;
+    this.modificationAccessions = modificationAccessions;
+    this.modificationNames = modificationNames;
+  }
+
+  public void addModification(ModificationProvider modification) {
+
+    if (modificationsAsString == null) {
+      modificationsAsString = new ArrayList<String>();
+    }
+
+    if (modificationAccessions == null) {
+      modificationAccessions = new ArrayList<String>();
+    }
+
+    if (modificationNames == null) {
+      modificationNames = new ArrayList<String>();
+    }
+
+
+    modificationsAsString.add(ModificationHelper.convertToString(modification));
+    modificationAccessions.add(modification.getAccession());
+    modificationNames.add(modification.getName());
+  }
+
+  public Set<String> getModificationNames() {
+
+    Set<String> modificationNamesSet = new TreeSet<String>();
+    if (modificationNames != null) {
+      modificationNamesSet.addAll(modificationNames);
+    }
+    return modificationNamesSet;
+  }
+
+  public Set<String> getModificationAccessions() {
+
+    Set<String> modificationAccessionsSet = new TreeSet<String>();
+    if (modificationAccessions != null) {
+      modificationAccessionsSet.addAll(modificationAccessions);
+    }
+    return modificationAccessionsSet;
+  }
+
+  public Map<String, String> getModificationAccessionName() {
+
+    Map<String, String> modificationAccessionsNameMap = new TreeMap<String, String>();
+    if (modificationNames != null && modificationAccessions != null) {
+      if (modificationNames.size() == modificationAccessions.size()) {
+        for (int i = 0; i < modificationNames.size(); i++) {
+          modificationAccessionsNameMap.put(modificationNames.get(i), modificationAccessions.get(i));
         }
-
-        this.modificationsAsString = modificationsAsString;
-        this.modificationAccessions = modificationAccessions;
-        this.modificationNames = modificationNames;
+      }
     }
+    return modificationAccessionsNameMap;
+  }
 
-    public void addModification(ModificationProvider modification) {
+  public String getUniprotMapping() {
+    return uniprotMapping;
+  }
 
-        if (modificationsAsString == null) {
-            modificationsAsString = new ArrayList<String>();
-        }
+  public void setUniprotMapping(String uniprotMapping) {
+    this.uniprotMapping = uniprotMapping;
+  }
 
-        if (modificationAccessions == null) {
-            modificationAccessions = new ArrayList<String>();
-        }
+  public String getEnsemblMapping() {
+    return ensemblMapping;
+  }
 
-        if (modificationNames == null) {
-            modificationNames = new ArrayList<String>();
-        }
+  public void setEnsemblMapping(String ensemblMapping) {
+    this.ensemblMapping = ensemblMapping;
+  }
 
+  public Set<String> getOtherMappings() {
+    return otherMappings;
+  }
 
-        modificationsAsString.add(ModificationHelper.convertToString(modification));
-        modificationAccessions.add(modification.getAccession());
-        modificationNames.add(modification.getName());
-    }
+  public void setOtherMappings(Set<String> otherMappings) {
+    this.otherMappings = otherMappings;
+  }
 
-    public Set<String> getModificationNames() {
+  public String getInferredSequence() {
+    return inferredSequence;
+  }
 
-        Set<String> modificationNamesSet = new TreeSet<String>();
-        if (modificationNames != null) {
-            modificationNamesSet.addAll(modificationNames);
-        }
-        return modificationNamesSet;
-    }
-
-    public Set<String> getModificationAccessions() {
-
-        Set<String> modificationAccessionsSet = new TreeSet<String>();
-        if (modificationAccessions != null) {
-            modificationAccessionsSet.addAll(modificationAccessions);
-        }
-        return modificationAccessionsSet;
-    }
-
-    public Map<String, String> getModificationAccessionName() {
-
-        Map<String, String> modificationAccessionsNameMap = new TreeMap<String, String>();
-        if (modificationNames != null && modificationAccessions != null) {
-            if (modificationNames.size() == modificationAccessions.size()) {
-                for (int i = 0; i < modificationNames.size(); i++) {
-                    modificationAccessionsNameMap.put(modificationNames.get(i), modificationAccessions.get(i));
-                }
-            }
-        }
-        return modificationAccessionsNameMap;
-    }
-
-    public String getUniprotMapping() {
-        return uniprotMapping;
-    }
-
-    public void setUniprotMapping(String uniprotMapping) {
-        this.uniprotMapping = uniprotMapping;
-    }
-
-    public String getEnsemblMapping() {
-        return ensemblMapping;
-    }
-
-    public void setEnsemblMapping(String ensemblMapping) {
-        this.ensemblMapping = ensemblMapping;
-    }
-
-    public Set<String> getOtherMappings() {
-        return otherMappings;
-    }
-
-    public void setOtherMappings(Set<String> otherMappings) {
-        this.otherMappings = otherMappings;
-    }
-
-    public String getInferredSequence() {
-        return inferredSequence;
-    }
-
-    public void setInferredSequence(String inferredSequence) {
-        this.inferredSequence = inferredSequence;
-    }
+  public void setInferredSequence(String inferredSequence) {
+    this.inferredSequence = inferredSequence;
+  }
 }
