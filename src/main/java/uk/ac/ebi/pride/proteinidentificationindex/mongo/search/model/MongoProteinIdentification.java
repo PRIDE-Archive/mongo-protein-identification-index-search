@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model;
 
-import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
@@ -11,7 +10,7 @@ import uk.ac.ebi.pride.proteincatalogindex.search.util.ProteinDetailUtils;
 
 import java.util.*;
 
-@Document(collection = "psm")
+@Document(collection = "protein_id")
 public class MongoProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
 
   @Id
