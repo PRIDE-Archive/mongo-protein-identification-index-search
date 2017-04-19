@@ -1,5 +1,8 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model.MongoProteinIdentification;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.repository.MongoProteinIdentificationRepository;
@@ -17,6 +20,9 @@ public class MongoProteinIdentificationSearchService {
   @Resource
   private MongoProteinIdentificationRepository mongoProteinIdentificationRepository;
 
+  @Autowired
+  private MongoOperations mongoOperations;
+
   public MongoProteinIdentificationSearchService() {
   }
 
@@ -28,13 +34,18 @@ public class MongoProteinIdentificationSearchService {
     this.mongoProteinIdentificationRepository = mongoProteinIdentificationRepository;
   }
 
-  public List<MongoProteinIdentification> findById(String id) {
+  public MongoProteinIdentification findById(String id) {
     return mongoProteinIdentificationRepository.findById(id);
   }
 
-  public List<MongoProteinIdentification> findById(Collection<String> ids) {
+  public List<MongoProteinIdentification> findByIdIn(Collection<String> ids) {
     return mongoProteinIdentificationRepository.findByIdIn(ids);
   }
+
+  public List<MongoProteinIdentification> findByIdIn(Collection<String> ids, Sort sort) {
+    return mongoProteinIdentificationRepository.findByIdIn(ids, sort);
+  }
+
   public List<MongoProteinIdentification> findByProjectAccession(String projectAccession) {
     return mongoProteinIdentificationRepository.findByProjectAccession(projectAccession);
   }
