@@ -10,7 +10,7 @@ import uk.ac.ebi.pride.proteincatalogindex.search.util.ProteinDetailUtils;
 
 import java.util.*;
 
-@Document(collection = "protein_id")
+@Document(collection = "proteinids")
 public class MongoProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
 
   @Id
