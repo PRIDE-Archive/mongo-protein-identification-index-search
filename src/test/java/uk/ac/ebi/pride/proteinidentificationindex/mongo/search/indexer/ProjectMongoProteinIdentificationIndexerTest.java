@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-mongo-test-context.xml")
@@ -45,15 +47,15 @@ public class ProjectMongoProteinIdentificationIndexerTest {
 
   @Test
   public void testThatNoResultsAreReturned() {
-    List<MongoProteinIdentification> results = mongoProteinIdentificationSearchService.findById(TEST_ID);
-    assertEquals(0L, results.size());
+    MongoProteinIdentification result = mongoProteinIdentificationSearchService.findById(TEST_ID);
+    assertNull(result);
   }
 
   @Test
   public void testAddProtein() {
     addD0NNb3();
-    List<MongoProteinIdentification> results = mongoProteinIdentificationSearchService.findById(TEST_ID);
-    assertEquals(1L, results.size());
+    MongoProteinIdentification result = mongoProteinIdentificationSearchService.findById(TEST_ID);
+    assertNotNull(result);
   }
 
   private void addD0NNb3() {
