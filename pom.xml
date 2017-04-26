@@ -27,6 +27,7 @@
     -->
 
     <properties>
+        <java.version>1.7</java.version>
         <protein.catalog.index.search.version>1.0.0</protein.catalog.index.search.version>
         <archive.repo.version>0.1.19</archive.repo.version>
         <archive.data.provider.api.version>2.0.9</archive.data.provider.api.version>

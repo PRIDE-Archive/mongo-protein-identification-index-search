@@ -75,19 +75,20 @@ public class MongoProjectProteinIdentificationsIndexer {
    * @param mongoProteinIdentifications The list to be enriched with information from the Catalog
    */
   private void addCatalogInfoToProteinIdentifications(List<MongoProteinIdentification> mongoProteinIdentifications) {
-    mongoProteinIdentifications.forEach(mongoProteinIdentification -> {
+    for (MongoProteinIdentification mongoProteinIdentification : mongoProteinIdentifications) {
       findOtherMappings(mongoProteinIdentification);
-    });
+    }
   }
 
   private void findOtherMappings(MongoProteinIdentification mongoProteinIdentification) {
-    mongoProteinIdentification.setOtherMappings(new TreeSet<>());
-    mongoProteinIdentification.setDescription(new LinkedList<>());
+    mongoProteinIdentification.setOtherMappings(new TreeSet<String>());
+    mongoProteinIdentification.setDescription(new LinkedList<String>());
     List<ProteinIdentified> proteinsFromCatalog = proteinCatalogSearchService.findByAccession(mongoProteinIdentification.getAccession());
     if (proteinsFromCatalog != null && proteinsFromCatalog.size() > 0) {
       logger.debug("Protein " + mongoProteinIdentification.getAccession() + " already in the Catalog - getting details...");
-      proteinsFromCatalog.forEach(proteins->
-          updateProteinIdentification(mongoProteinIdentification, proteins));
+      for (ProteinIdentified proteinIdentified : proteinsFromCatalog) {
+        updateProteinIdentification(mongoProteinIdentification, proteinIdentified);
+      }
     } else { // if none, there were errors
       logger.error("Protein " + mongoProteinIdentification.getId() + " not in the catalog - It should be saved by now...");
     }
