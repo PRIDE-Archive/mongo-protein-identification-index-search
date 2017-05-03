@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>mongo-protein-identification-index-search</name>
-    <url>https://github.com/PRIDE-Archive/protein-identification-index-service</url>
+    <url>https://github.com/PRIDE-Archive/mongo-protein-identification-index-service</url>
 
     <!--
         To build the project use:
@@ -310,9 +310,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:https://github.com/PRIDE-Archive/protein-identification-index-service.git</connection>
-        <developerConnection>scm:git:https://github.com/PRIDE-Archive/protein-identification-index-service.git</developerConnection>
-        <url>https://github.com/PRIDE-Archive/protein-identification-index-service</url>
+        <connection>scm:git:https://github.com/PRIDE-Archive/mongo-protein-identification-index-search.git</connection>
+        <developerConnection>scm:git:https://github.com/PRIDE-Archive/mongo-protein-identification-index-service.git</developerConnection>
+        <url>https://github.com/PRIDE-Archive/mongo-protein-identification-index-service</url>
         <tag>HEAD</tag>
     </scm>
 
