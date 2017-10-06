@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>uk.ac.ebi.pride</groupId>
+    <artifactId>mongo-protein-identification-index-search</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.1-SNAPSHOT-ORCID</version>
+    <name>mongo-protein-identification-index-search</name>
+    <url>hhttps://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
+
     <parent>
         <groupId>uk.ac.ebi.pride.architectural</groupId>
         <artifactId>pride-core</artifactId>
         <version>1.0.1</version>
     </parent>
-
-    <groupId>uk.ac.ebi.pride</groupId>
-    <artifactId>mongo-protein-identification-index-search</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0.1-SNAPSHOT</version>
-    <name>mongo-protein-identification-index-search</name>
-    <url>hhttps://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
 
     <!--
         To build the project use:
@@ -27,12 +27,12 @@
     -->
 
     <properties>
-        <protein.catalog.index.search.version>1.0.1</protein.catalog.index.search.version>
-        <archive.repo.version>1.0.0</archive.repo.version>
-        <archive.data.provider.api.version>2.0.9</archive.data.provider.api.version>
-        <archive.utils.version>0.1.21</archive.utils.version>
+        <protein.catalog.index.search.version>1.0.2</protein.catalog.index.search.version>
+        <archive.repo.version>1.0.1</archive.repo.version>
+        <archive.data.provider.api.version>2.0.11</archive.data.provider.api.version>
+        <archive.utils.version>0.1.22</archive.utils.version>
         <accession.resolver.version>1.0.1</accession.resolver.version>
-        <index.utils.version>1.0.0</index.utils.version>
+        <index.utils.version>1.0.1</index.utils.version>
     </properties>
 
     <build>
