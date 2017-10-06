@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride</groupId>
     <artifactId>mongo-protein-identification-index-search</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1-SNAPSHOT-ORCID</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>mongo-protein-identification-index-search</name>
     <url>https://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
 
