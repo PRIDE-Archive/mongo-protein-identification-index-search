@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.0.1-SNAPSHOT-ORCID</version>
     <name>mongo-protein-identification-index-search</name>
-    <url>hhttps://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
+    <url>https://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
 
     <parent>
         <groupId>uk.ac.ebi.pride.architectural</groupId>
