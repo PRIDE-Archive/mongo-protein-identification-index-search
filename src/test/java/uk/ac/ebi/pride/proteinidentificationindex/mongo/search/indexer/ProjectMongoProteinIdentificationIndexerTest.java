@@ -28,6 +28,8 @@ public class ProjectMongoProteinIdentificationIndexerTest {
   private static final String TEST_SUBMITTED_SEQ = "MSSEEVVVAVEEQEIPDVIERLMSSEEVVVAVEEQEIPDVIERLMSSEEVVVAVEEQEIPDVIERL";
   private static final String TEST_ID = "TEST_ID";
   private static final String TEST_SUBMITTED_AC = "D0NNB3";
+  private static final String TEST_PROJ_ACC = "PXT000001";
+
 
   private static final String TEST_PROTEIN_ACCESSION = "D0NNB3";
 
@@ -56,6 +58,8 @@ public class ProjectMongoProteinIdentificationIndexerTest {
     addD0NNb3();
     MongoProteinIdentification result = mongoProteinIdentificationSearchService.findById(TEST_ID);
     assertNotNull(result);
+    long totalCount = mongoProteinIdentificationSearchService.countByProjectAccession(TEST_PROJ_ACC);
+    assertEquals(1, totalCount);
   }
 
   private void addD0NNb3() {
@@ -64,6 +68,7 @@ public class ProjectMongoProteinIdentificationIndexerTest {
     mongoProteinIdentification.setAccession(TEST_PROTEIN_ACCESSION);
     mongoProteinIdentification.setSubmittedAccession(TEST_SUBMITTED_AC);
     mongoProteinIdentification.setSubmittedSequence(TEST_SUBMITTED_SEQ);
+    mongoProteinIdentification.setProjectAccession(TEST_PROJ_ACC);
     mongoProteinIdentificationIndexService.save(mongoProteinIdentification);
   }
 }

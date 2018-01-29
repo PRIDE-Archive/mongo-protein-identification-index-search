@@ -49,4 +49,8 @@ public class MongoProteinIdentificationSearchService {
   public List<MongoProteinIdentification> findByProjectAccession(String projectAccession) {
     return mongoProteinIdentificationRepository.findByProjectAccession(projectAccession);
   }
+
+  public long countByProjectAccession(String projectAccession) {
+    return mongoProteinIdentificationRepository.countByProjectAccession(projectAccession);
+  }
 }

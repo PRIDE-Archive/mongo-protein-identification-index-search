@@ -12,9 +12,10 @@ import java.util.List;
 @Repository
 public interface MongoProteinIdentificationRepository extends MongoRepository<MongoProteinIdentification, String> {
 
-    MongoProteinIdentification findById(String id);
-    List<MongoProteinIdentification> findByIdIn(Collection<String> id);
-    List<MongoProteinIdentification> findByIdIn(Collection<String> id, Sort sort);
+  MongoProteinIdentification findById(String id);
+  List<MongoProteinIdentification> findByIdIn(Collection<String> id);
+  List<MongoProteinIdentification> findByIdIn(Collection<String> id, Sort sort);
 
-    List<MongoProteinIdentification> findByProjectAccession(String projectAccession);
+  List<MongoProteinIdentification> findByProjectAccession(String projectAccession);
+  long countByProjectAccession(String projectAccession);
 }
