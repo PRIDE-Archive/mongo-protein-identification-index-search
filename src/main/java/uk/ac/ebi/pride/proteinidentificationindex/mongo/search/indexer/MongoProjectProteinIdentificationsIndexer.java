@@ -1,60 +1,87 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.indexer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.proteincatalogindex.search.model.ProteinIdentified;
 import uk.ac.ebi.pride.proteincatalogindex.search.service.ProteinCatalogSearchService;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model.MongoProteinIdentification;
-import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util.MongoProteinIdentificationMzTabBuilder;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.MongoProteinIdentificationIndexService;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.MongoProteinIdentificationSearchService;
+import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util.MongoProteinIdentificationMzTabBuilder;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+/** Indexes a project's proteins in Mongo. */
+@Slf4j
 public class MongoProjectProteinIdentificationsIndexer {
 
-  private static Logger logger = LoggerFactory.getLogger(MongoProjectProteinIdentificationsIndexer.class.getName());
+  @Resource private MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService;
+  @Resource private MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService;
+  @Resource private ProteinCatalogSearchService proteinCatalogSearchService;
 
-  @Resource
-  private MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService;
-  @Resource
-  private MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService;
-  @Resource
-  private ProteinCatalogSearchService proteinCatalogSearchService;
-
-
-  public MongoProjectProteinIdentificationsIndexer(MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService,
-                                                   MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService,
-                                                   ProteinCatalogSearchService proteinCatalogSearchService) {
+  /**
+   * Constructor, sets the search, index, and catalog services.
+   *
+   * @param mongoProteinIdentificationSearchService the protein ID search service
+   * @param mongoProteinIdentificationIndexService the protein ID index service
+   * @param proteinCatalogSearchService the protein catalog search sergice
+   */
+  public MongoProjectProteinIdentificationsIndexer(
+      MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService,
+      MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService,
+      ProteinCatalogSearchService proteinCatalogSearchService) {
     this.mongoProteinIdentificationSearchService = mongoProteinIdentificationSearchService;
     this.mongoProteinIdentificationIndexService = mongoProteinIdentificationIndexService;
     this.proteinCatalogSearchService = proteinCatalogSearchService;
   }
 
-  public void indexAllProteinIdentificationsForProjectAndAssay(String projectAccession, String assayAccession, MZTabFile mzTabFile){
+  /**
+   * Indexes all the protein IDs for the Project and Assay
+   *
+   * @param projectAccession the project accession
+   * @param assayAccession the assay accession
+   * @param mzTabFile the mzTab file
+   */
+  public void indexAllProteinIdentificationsForProjectAndAssay(
+      String projectAccession, String assayAccession, MZTabFile mzTabFile) {
     try {
       if (mzTabFile != null) {
-        List<MongoProteinIdentification> proteinsFromFile = MongoProteinIdentificationMzTabBuilder.readProteinIdentificationsFromMzTabFile(projectAccession, assayAccession, mzTabFile);
-        logger.debug("Found " + proteinsFromFile.size() + " Protein Identifications "
-            + " for PROJECT:" + projectAccession
-            + " and ASSAY:" + assayAccession);
-        if (proteinsFromFile.size()>0) {
-          addCatalogInfoToProteinIdentifications(proteinsFromFile);  // add synonyms, details, etc
+        List<MongoProteinIdentification> proteinsFromFile =
+            MongoProteinIdentificationMzTabBuilder.readProteinIdentificationsFromMzTabFile(
+                projectAccession, assayAccession, mzTabFile);
+        log.debug(
+            "Found "
+                + proteinsFromFile.size()
+                + " Protein Identifications "
+                + " for PROJECT:"
+                + projectAccession
+                + " and ASSAY:"
+                + assayAccession);
+        if (proteinsFromFile.size() > 0) {
+          addCatalogInfoToProteinIdentifications(proteinsFromFile); // add synonyms, details, etc
           mongoProteinIdentificationIndexService.save(proteinsFromFile);
-          logger.debug("COMMITTED " + proteinsFromFile.size() +
-              " Protein Identifications from PROJECT:" + projectAccession +
-              " ASSAY:" + assayAccession);
+          log.debug(
+              "COMMITTED "
+                  + proteinsFromFile.size()
+                  + " Protein Identifications from PROJECT:"
+                  + projectAccession
+                  + " ASSAY:"
+                  + assayAccession);
         }
       } else {
-        logger.error("An empty mzTab file has been passed to the indexing method - no indexing took place");
+        log.error(
+            "An empty mzTab file has been passed to the indexing method - no indexing took place");
       }
     } catch (Exception e) {
-      logger.error("Cannot index Protein Identifications from PROJECT:" + projectAccession + " and ASSAY:" + assayAccession );
-      logger.error("Reason: ");
+      log.error(
+          "Cannot index Protein Identifications from PROJECT:"
+              + projectAccession
+              + " and ASSAY:"
+              + assayAccession);
+      log.error("Reason: ");
       e.printStackTrace();
     }
   }
@@ -65,7 +92,8 @@ public class MongoProjectProteinIdentificationsIndexer {
    * @param projectAccession The accession that identifies the PRIDE Archive project
    */
   public void deleteAllProteinIdentificationsForProject(String projectAccession) {
-    List<MongoProteinIdentification> mongoProteinIdentifications = this.mongoProteinIdentificationSearchService.findByProjectAccession(projectAccession);
+    List<MongoProteinIdentification> mongoProteinIdentifications =
+        this.mongoProteinIdentificationSearchService.findByProjectAccession(projectAccession);
     this.mongoProteinIdentificationIndexService.delete(mongoProteinIdentifications);
   }
 
@@ -74,7 +102,8 @@ public class MongoProjectProteinIdentificationsIndexer {
    *
    * @param mongoProteinIdentifications The list to be enriched with information from the Catalog
    */
-  private void addCatalogInfoToProteinIdentifications(List<MongoProteinIdentification> mongoProteinIdentifications) {
+  private void addCatalogInfoToProteinIdentifications(
+      List<MongoProteinIdentification> mongoProteinIdentifications) {
     for (MongoProteinIdentification mongoProteinIdentification : mongoProteinIdentifications) {
       findOtherMappings(mongoProteinIdentification);
     }
@@ -83,22 +112,30 @@ public class MongoProjectProteinIdentificationsIndexer {
   private void findOtherMappings(MongoProteinIdentification mongoProteinIdentification) {
     mongoProteinIdentification.setOtherMappings(new TreeSet<String>());
     mongoProteinIdentification.setDescription(new LinkedList<String>());
-    List<ProteinIdentified> proteinsFromCatalog = proteinCatalogSearchService.findByAccession(mongoProteinIdentification.getAccession());
+    List<ProteinIdentified> proteinsFromCatalog =
+        proteinCatalogSearchService.findByAccession(mongoProteinIdentification.getAccession());
     if (proteinsFromCatalog != null && proteinsFromCatalog.size() > 0) {
-      logger.debug("Protein " + mongoProteinIdentification.getAccession() + " already in the Catalog - getting details...");
+      log.debug(
+          "Protein "
+              + mongoProteinIdentification.getAccession()
+              + " already in the Catalog - getting details...");
       for (ProteinIdentified proteinIdentified : proteinsFromCatalog) {
         updateProteinIdentification(mongoProteinIdentification, proteinIdentified);
       }
-    } else { // if none, there were errors
-      logger.error("Protein " + mongoProteinIdentification.getId() + " not in the catalog - It should be saved by now...");
+    } else {
+      log.error(
+          "Protein "
+              + mongoProteinIdentification.getId()
+              + " not in the catalog - It should be saved by now...");
     }
   }
 
-  private void updateProteinIdentification(MongoProteinIdentification mongoProteinIdentification, ProteinIdentified proteinFromCatalog) {
-    if (proteinFromCatalog.getUniprotMapping()!=null) {
+  private void updateProteinIdentification(
+      MongoProteinIdentification mongoProteinIdentification, ProteinIdentified proteinFromCatalog) {
+    if (proteinFromCatalog.getUniprotMapping() != null) {
       mongoProteinIdentification.setUniprotMapping(proteinFromCatalog.getUniprotMapping());
     }
-    if (proteinFromCatalog.getEnsemblMapping()!=null) {
+    if (proteinFromCatalog.getEnsemblMapping() != null) {
       mongoProteinIdentification.setEnsemblMapping(proteinFromCatalog.getEnsemblMapping());
     }
     if (proteinFromCatalog.getOtherMappings() != null) {

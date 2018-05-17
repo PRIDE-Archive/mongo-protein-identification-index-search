@@ -1,29 +1,26 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 
-/**
- * User: ntoro
- * Date: 09/07/2014
- * Time: 16:23
- */
 public class MongoProteinDetailUtils {
 
-    public static final String NAME = "NAME####";
+  public static final String NAME = "NAME####";
 
-    public static String extractInformationByType(List<String> description, String type){
-        String info = null;
-        if(description != null){
-            for (String s : description){
-                if(s.startsWith(type)){
-                    info = s.split(type)[1];
-                }
-            }
+  public static String extractInformationByType(List<String> description, String type) {
+    String info = "";
+    if (!CollectionUtils.isEmpty(description)) {
+      for (String text : description) {
+        if (text.startsWith(type)) {
+          info = text.split(type)[1];
         }
-        return info;
+      }
     }
+    return info;
+  }
 
-    public static String getNameFromDescription(List<String> description){
-        return extractInformationByType(description, NAME);
-    }
+  public static String getNameFromDescription(List<String> description) {
+    return extractInformationByType(description, NAME);
+  }
 }

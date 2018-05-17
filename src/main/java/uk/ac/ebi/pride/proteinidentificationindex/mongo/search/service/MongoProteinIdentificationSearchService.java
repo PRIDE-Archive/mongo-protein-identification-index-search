@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -8,34 +9,37 @@ import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.model.MongoProtei
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.repository.MongoProteinIdentificationRepository;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /*  NOTE: protein accessions can contain chars that produce problems in solr queries ([,],:). They are replaced by _ when
  *          using the repository methods
  */
 @SuppressWarnings("unused")
 @Service
+@Slf4j
 public class MongoProteinIdentificationSearchService {
 
-  @Resource
-  private MongoProteinIdentificationRepository mongoProteinIdentificationRepository;
+  @Resource private MongoProteinIdentificationRepository mongoProteinIdentificationRepository;
 
-  @Autowired
-  private MongoOperations mongoOperations;
+  @Autowired private MongoOperations mongoOperations;
 
-  public MongoProteinIdentificationSearchService() {
-  }
+  public MongoProteinIdentificationSearchService() {}
 
-  public MongoProteinIdentificationSearchService(MongoProteinIdentificationRepository mongoProteinIdentificationRepository) {
+  public MongoProteinIdentificationSearchService(
+      MongoProteinIdentificationRepository mongoProteinIdentificationRepository) {
     this.mongoProteinIdentificationRepository = mongoProteinIdentificationRepository;
   }
 
-  public void setMongoProteinIdentificationRepository(MongoProteinIdentificationRepository mongoProteinIdentificationRepository) {
+  public void setMongoProteinIdentificationRepository(
+      MongoProteinIdentificationRepository mongoProteinIdentificationRepository) {
     this.mongoProteinIdentificationRepository = mongoProteinIdentificationRepository;
   }
 
   public MongoProteinIdentification findById(String id) {
-    return mongoProteinIdentificationRepository.findById(id);
+    return mongoProteinIdentificationRepository
+        .findById(id)
+        .orElse(new MongoProteinIdentification());
   }
 
   public List<MongoProteinIdentification> findByIdIn(Collection<String> ids) {

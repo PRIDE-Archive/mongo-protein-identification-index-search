@@ -11,10 +11,10 @@ import uk.ac.ebi.pride.proteincatalogindex.search.util.ProteinDetailUtils;
 import java.util.*;
 
 @Document(collection = "proteinids")
-public class MongoProteinIdentification implements ProteinIdentificationProvider, ProteinDetailProvider {
+public class MongoProteinIdentification
+    implements ProteinIdentificationProvider, ProteinDetailProvider {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   private String submittedAccession;
 
@@ -113,63 +113,49 @@ public class MongoProteinIdentification implements ProteinIdentificationProvider
   }
 
   public Iterable<ModificationProvider> getModifications() {
-
-    List<ModificationProvider> modifications = new ArrayList<ModificationProvider>();
-
+    List<ModificationProvider> modifications = new ArrayList<>();
     if (modificationsAsString != null) {
       for (String mod : modificationsAsString) {
-        if(!mod.isEmpty()) {
+        if (!mod.isEmpty()) {
           modifications.add(ModificationHelper.convertFromString(mod));
         }
       }
     }
-
     return modifications;
   }
 
   public void setModifications(List<ModificationProvider> modifications) {
-
-    if (modifications == null)
-      return;
-
-    List<String> modificationsAsString = new ArrayList<String>();
-    List<String> modificationNames = new ArrayList<String>();
-    List<String> modificationAccessions = new ArrayList<String>();
-
+    if (modifications == null) return;
+    List<String> modificationsAsString = new ArrayList<>();
+    List<String> modificationNames = new ArrayList<>();
+    List<String> modificationAccessions = new ArrayList<>();
     for (ModificationProvider modification : modifications) {
       modificationsAsString.add(ModificationHelper.convertToString(modification));
       modificationAccessions.add(modification.getAccession());
       modificationNames.add(modification.getName());
     }
-
     this.modificationsAsString = modificationsAsString;
     this.modificationAccessions = modificationAccessions;
     this.modificationNames = modificationNames;
   }
 
   public void addModification(ModificationProvider modification) {
-
     if (modificationsAsString == null) {
-      modificationsAsString = new ArrayList<String>();
+      modificationsAsString = new ArrayList<>();
     }
-
     if (modificationAccessions == null) {
-      modificationAccessions = new ArrayList<String>();
+      modificationAccessions = new ArrayList<>();
     }
-
     if (modificationNames == null) {
-      modificationNames = new ArrayList<String>();
+      modificationNames = new ArrayList<>();
     }
-
-
     modificationsAsString.add(ModificationHelper.convertToString(modification));
     modificationAccessions.add(modification.getAccession());
     modificationNames.add(modification.getName());
   }
 
   public Set<String> getModificationNames() {
-
-    Set<String> modificationNamesSet = new TreeSet<String>();
+    Set<String> modificationNamesSet = new TreeSet<>();
     if (modificationNames != null) {
       modificationNamesSet.addAll(modificationNames);
     }
@@ -177,8 +163,7 @@ public class MongoProteinIdentification implements ProteinIdentificationProvider
   }
 
   public Set<String> getModificationAccessions() {
-
-    Set<String> modificationAccessionsSet = new TreeSet<String>();
+    Set<String> modificationAccessionsSet = new TreeSet<>();
     if (modificationAccessions != null) {
       modificationAccessionsSet.addAll(modificationAccessions);
     }
@@ -186,12 +171,12 @@ public class MongoProteinIdentification implements ProteinIdentificationProvider
   }
 
   public Map<String, String> getModificationAccessionName() {
-
-    Map<String, String> modificationAccessionsNameMap = new TreeMap<String, String>();
+    Map<String, String> modificationAccessionsNameMap = new TreeMap<>();
     if (modificationNames != null && modificationAccessions != null) {
       if (modificationNames.size() == modificationAccessions.size()) {
         for (int i = 0; i < modificationNames.size(); i++) {
-          modificationAccessionsNameMap.put(modificationNames.get(i), modificationAccessions.get(i));
+          modificationAccessionsNameMap.put(
+              modificationNames.get(i), modificationAccessions.get(i));
         }
       }
     }
