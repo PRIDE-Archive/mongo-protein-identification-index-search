@@ -8,7 +8,6 @@
 
     <dependencySets>
         <dependencySet>
-            <!--<outputDirectory>${assembly.dir}/lib</outputDirectory>-->
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <scope>runtime</scope>
@@ -23,7 +22,6 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-            <!--<outputDirectory>${assembly.dir}</outputDirectory>-->
             <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
