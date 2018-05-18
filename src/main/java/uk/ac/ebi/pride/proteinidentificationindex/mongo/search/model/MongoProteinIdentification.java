@@ -214,4 +214,7 @@ public class MongoProteinIdentification
   public void setInferredSequence(String inferredSequence) {
     this.inferredSequence = inferredSequence;
   }
+
+  // todo javadoc
+  // todo coverage
 }

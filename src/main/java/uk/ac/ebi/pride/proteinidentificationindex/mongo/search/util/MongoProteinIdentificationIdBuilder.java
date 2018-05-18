@@ -23,4 +23,7 @@ public class MongoProteinIdentificationIdBuilder {
     String[] tokens = id.split(SEPARATOR);
     return 1 < tokens.length ? tokens[2] : "";
   }
+
+  // todo javadoc
+  // todo coverage
 }

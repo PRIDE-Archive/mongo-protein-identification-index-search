@@ -110,8 +110,8 @@ public class MongoProjectProteinIdentificationsIndexer {
   }
 
   private void findOtherMappings(MongoProteinIdentification mongoProteinIdentification) {
-    mongoProteinIdentification.setOtherMappings(new TreeSet<String>());
-    mongoProteinIdentification.setDescription(new LinkedList<String>());
+    mongoProteinIdentification.setOtherMappings(new TreeSet<>());
+    mongoProteinIdentification.setDescription(new LinkedList<>());
     List<ProteinIdentified> proteinsFromCatalog =
         proteinCatalogSearchService.findByAccession(mongoProteinIdentification.getAccession());
     if (proteinsFromCatalog != null && proteinsFromCatalog.size() > 0) {
@@ -146,4 +146,8 @@ public class MongoProjectProteinIdentificationsIndexer {
     }
     mongoProteinIdentification.setInferredSequence(proteinFromCatalog.getInferredSequence());
   }
+
+  // todo javadoc
+  // todo coverage
+  // todo delete all proteins for project/assay with paging
 }

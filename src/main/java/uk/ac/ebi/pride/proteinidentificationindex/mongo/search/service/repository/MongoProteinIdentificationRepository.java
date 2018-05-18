@@ -23,4 +23,7 @@ public interface MongoProteinIdentificationRepository
   List<MongoProteinIdentification> findByAssayAccession(String assayAccession);
 
   long countByAssayAccession(String assayAccession);
+
+  // todo paging
+  // todo javadoc
 }

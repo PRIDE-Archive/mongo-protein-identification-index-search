@@ -82,7 +82,7 @@ public class MongoProteinIdentificationIndexService {
    * @param assayAccession the project's assay accession number to delete proteins
    */
   @Transactional
-  public void deleteByAssayccession(String assayAccession) {
+  public void deleteByAssayAccession(String assayAccession) {
     mongoProteinIdentificationRepository.deleteAll(
         mongoProteinIdentificationRepository.findByAssayAccession(assayAccession));
   }
@@ -103,4 +103,6 @@ public class MongoProteinIdentificationIndexService {
       i++;
     }
   }
+
+  // todo coverage
 }

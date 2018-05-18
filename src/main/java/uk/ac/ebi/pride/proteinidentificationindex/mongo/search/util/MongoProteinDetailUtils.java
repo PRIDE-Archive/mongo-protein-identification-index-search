@@ -23,4 +23,7 @@ public class MongoProteinDetailUtils {
   public static String getNameFromDescription(List<String> description) {
     return extractInformationByType(description, NAME);
   }
+
+  // todo javadoc
+  // todo coverage
 }
