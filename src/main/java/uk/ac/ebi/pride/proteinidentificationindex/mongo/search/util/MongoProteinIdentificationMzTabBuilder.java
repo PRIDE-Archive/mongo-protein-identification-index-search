@@ -30,7 +30,7 @@ public class MongoProteinIdentificationMzTabBuilder {
       for (Protein mzTabProtein : mzTabProteins) {
         MongoProteinIdentification mongoProteinIdentification = new MongoProteinIdentification();
         mongoProteinIdentification.setId(
-            MongoProteinIdentificationIdBuilder.getId(
+            MongoProteinIdentificationIdBuilder.createId(
                 mzTabProtein.getAccession(), projectAccession, assayAccession));
         mongoProteinIdentification.setOtherMappings(new TreeSet<>());
         mongoProteinIdentification.setSubmittedAccession(mzTabProtein.getAccession());

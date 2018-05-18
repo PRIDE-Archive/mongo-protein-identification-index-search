@@ -5,7 +5,11 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.config.MongoTestConfiguration;
+import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util.MongoProteinDetailUtils;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util.MongoProteinIdentificationIdBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -26,26 +30,34 @@ public class MongoMongoProteinIdentificationIdBuilderTest {
   @Test
   public void testGetId() throws Exception {
     String newID =
-        MongoProteinIdentificationIdBuilder.getId(
+        MongoProteinIdentificationIdBuilder.createId(
             PROTEIN_ACCESSION, PROJECT_ACCESSION, ASSAY_ACCESSION);
     assertEquals(ID, newID);
   }
 
   @Test
-  public void testGetProteinAccession() throws Exception {
+  public void testGetProteinAccession() {
     String proteinAccession = MongoProteinIdentificationIdBuilder.getProteinAccession(ID);
     assertEquals(PROTEIN_ACCESSION, proteinAccession);
   }
 
   @Test
-  public void testGetProjectAccession() throws Exception {
+  public void testGetProjectAccession() {
     String projectAccession = MongoProteinIdentificationIdBuilder.getProjectAccession(ID);
     assertEquals(PROJECT_ACCESSION, projectAccession);
   }
 
   @Test
-  public void testGetAssayAccession() throws Exception {
+  public void testGetAssayAccession() {
     String assayAccession = MongoProteinIdentificationIdBuilder.getAssayAccession(ID);
     assertEquals(ASSAY_ACCESSION, assayAccession);
+  }
+
+  @Test
+  public void testBuildId() {
+    List<String> descriptions = new ArrayList<>();
+    String testDescription = "testDescription";
+    descriptions.add(MongoProteinDetailUtils.NAME + "testDescription");
+    assertEquals(testDescription, MongoProteinDetailUtils.getNameFromDescription(descriptions));
   }
 }
