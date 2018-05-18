@@ -8,6 +8,7 @@ public class MongoProteinDetailUtils {
 
   public static final String NAME = "NAME####";
 
+  @SuppressWarnings("WeakerAccess")
   public static String extractInformationByType(List<String> description, String type) {
     String info = "";
     if (!CollectionUtils.isEmpty(description)) {
