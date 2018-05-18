@@ -141,4 +141,6 @@ public class MongoProteinIdentificationSearchService {
   public long countByAssayAccession(String assayAccession) {
     return mongoProteinIdentificationRepository.countByAssayAccession(assayAccession);
   }
+
+  // todo coverage
 }
