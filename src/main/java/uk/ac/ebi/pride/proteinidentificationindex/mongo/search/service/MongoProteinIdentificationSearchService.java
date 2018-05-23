@@ -27,16 +27,6 @@ public class MongoProteinIdentificationSearchService {
   public MongoProteinIdentificationSearchService() {}
 
   /**
-   * Constructor, sets the mongo protein id repository.
-   *
-   * @param mongoProteinIdentificationRepository the mongo protein id repository
-   */
-  public MongoProteinIdentificationSearchService(
-      MongoProteinIdentificationRepository mongoProteinIdentificationRepository) {
-    this.mongoProteinIdentificationRepository = mongoProteinIdentificationRepository;
-  }
-
-  /**
    * Sets the mongo protein id repository.
    *
    * @param mongoProteinIdentificationRepository the mongo * protein id repository
@@ -59,34 +49,15 @@ public class MongoProteinIdentificationSearchService {
   }
 
   /**
-   * Finds a protein by IDs.
-   *
-   * @param ids the IDs to search for
-   * @return the proteins, otherwise a list with an empty protein is returned.
-   */
-  public List<MongoProteinIdentification> findByIdIn(Collection<String> ids) {
-    return mongoProteinIdentificationRepository.findByIdIn(ids);
-  }
-
-  /**
    * Finds a protein by IDs, sorted to a field.
    *
    * @param ids the IDs to search for
-   * @param sort the field to sort results upon
+   * @param pageable the page
    * @return the protein, otherwise an empty protein is returned.
    */
-  public List<MongoProteinIdentification> findByIdIn(Collection<String> ids, Sort sort) {
-    return mongoProteinIdentificationRepository.findByIdIn(ids, sort);
-  }
-
-  /**
-   * Finds a list of proteins by project accession.
-   *
-   * @param projectAccession the project accession to query for
-   * @return a list of proteins for a project accession
-   */
-  public List<MongoProteinIdentification> findByProjectAccession(String projectAccession) {
-    return mongoProteinIdentificationRepository.findByProjectAccession(projectAccession);
+  public List<MongoProteinIdentification> findByIdIn(
+      Collection<String> ids, Pageable pageable) {
+    return mongoProteinIdentificationRepository.findByIdIn(ids, pageable);
   }
 
   /**
@@ -109,16 +80,6 @@ public class MongoProteinIdentificationSearchService {
    */
   public long countByProjectAccession(String projectAccession) {
     return mongoProteinIdentificationRepository.countByProjectAccession(projectAccession);
-  }
-
-  /**
-   * Finds a list of proteins by assay accession.
-   *
-   * @param assayAccession the assay accession to query for
-   * @return a list of proteins for an assay accession
-   */
-  public List<MongoProteinIdentification> findByAssayAccession(String assayAccession) {
-    return mongoProteinIdentificationRepository.findByAssayAccession(assayAccession);
   }
 
   /**

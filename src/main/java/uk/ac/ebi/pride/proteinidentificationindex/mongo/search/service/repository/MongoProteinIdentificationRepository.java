@@ -16,29 +16,13 @@ public interface MongoProteinIdentificationRepository
     extends MongoRepository<MongoProteinIdentification, String> {
 
   /**
-   * Finds a list of proteins in a collection of IDs.
-   *
-   * @param ids a collection of IDs to search for
-   * @return a list of proteins corresponding to the provided IDs.
-   */
-  List<MongoProteinIdentification> findByIdIn(Collection<String> ids);
-
-  /**
    * Finds a sorted list of proteins in a collection of IDs.
    *
    * @param ids a collection of IDs to search for *
-   * @param sort how the result should be sorted
+   * @param pageable the page
    * @return a sorted list of proteins corresponding to the provided IDs.
    */
-  List<MongoProteinIdentification> findByIdIn(Collection<String> ids, Sort sort);
-
-  /**
-   * Finds a list of proteins for a project accession.
-   *
-   * @param projectAccession the project accession to search for
-   * @return a list of proteins corresponding to the project accession
-   */
-  List<MongoProteinIdentification> findByProjectAccession(String projectAccession);
+  List<MongoProteinIdentification> findByIdIn(Collection<String> ids, Pageable pageable);
 
   /**
    * Finds a page of proteins for a project accession.
@@ -56,14 +40,6 @@ public interface MongoProteinIdentificationRepository
    * @return a total number of proteins for the project accession
    */
   long countByProjectAccession(String projectAccession);
-
-  /**
-   * Finds a list of proteins for a assay accession.
-   *
-   * @param assayAccession the assay accession to search for
-   * @return a list of proteins corresponding to the assay accession
-   */
-  List<MongoProteinIdentification> findByAssayAccession(String assayAccession);
 
   /**
    * Finds a page of proteins for a assay accession.

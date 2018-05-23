@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.pride.proteinidentificationindex.mongo.search.config.MongoTestConfiguration;
@@ -37,16 +38,14 @@ public class ProjectMongoProteinIdentificationIndexerTest {
   @Resource private MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService;
   @Resource private MongoProteinIdentificationRepository mongoProteinIdentificationRepository;
   // @Resource private ProteinCatalogSearchService proteinCatalogSearchService; todo
-  private MongoProjectProteinIdentificationsIndexer mongoProjectProteinIdentificationsIndexer;
 
   @Before
   public void setUp() {
     mongoProteinIdentificationRepository.deleteAll();
     mongoProteinIdentificationIndexService.setMongoProteinIdentificationRepository(
         mongoProteinIdentificationRepository);
-    mongoProjectProteinIdentificationsIndexer =
-        new MongoProjectProteinIdentificationsIndexer(
-            mongoProteinIdentificationSearchService, mongoProteinIdentificationIndexService, null);
+    mongoProteinIdentificationSearchService.setMongoProteinIdentificationRepository(
+        mongoProteinIdentificationRepository);
   }
 
   @Test
@@ -94,11 +93,19 @@ public class ProjectMongoProteinIdentificationIndexerTest {
     mongoProteinIdentificationIndexService.deleteByIds(
         proteins.stream().map(MongoProteinIdentification::getId).collect(Collectors.toList()));
     mongoProteinIdentificationIndexService.save(protein);
+
+    // Additional mongoProjectProteinIdentificationsIndexer tests
+    MongoProjectProteinIdentificationsIndexer mongoProjectProteinIdentificationsIndexer =
+        new MongoProjectProteinIdentificationsIndexer(
+            mongoProteinIdentificationSearchService, mongoProteinIdentificationIndexService, null);
     mongoProjectProteinIdentificationsIndexer.deleteAllProteinsForProject(
         protein.getProjectAccession());
     mongoProteinIdentificationIndexService.save(protein);
     mongoProjectProteinIdentificationsIndexer.deleteAllProteinsForAssay(
         protein.getAssayAccession());
     mongoProteinIdentificationIndexService.save(protein);
+    List<MongoProteinIdentification> results =
+        mongoProteinIdentificationSearchService.findByIdIn(
+            new ArrayList<>(), PageRequest.of(0, 100));
   }
 }
