@@ -36,12 +36,17 @@ public class ProjectMongoProteinIdentificationIndexerTest {
   @Resource private MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService;
   @Resource private MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService;
   @Resource private MongoProteinIdentificationRepository mongoProteinIdentificationRepository;
+  // @Resource private ProteinCatalogSearchService proteinCatalogSearchService; todo
+  private MongoProjectProteinIdentificationsIndexer mongoProjectProteinIdentificationsIndexer;
 
   @Before
   public void setUp() {
     mongoProteinIdentificationRepository.deleteAll();
     mongoProteinIdentificationIndexService.setMongoProteinIdentificationRepository(
         mongoProteinIdentificationRepository);
+    mongoProjectProteinIdentificationsIndexer =
+        new MongoProjectProteinIdentificationsIndexer(
+            mongoProteinIdentificationSearchService, mongoProteinIdentificationIndexService, null);
   }
 
   @Test
@@ -89,8 +94,11 @@ public class ProjectMongoProteinIdentificationIndexerTest {
     mongoProteinIdentificationIndexService.deleteByIds(
         proteins.stream().map(MongoProteinIdentification::getId).collect(Collectors.toList()));
     mongoProteinIdentificationIndexService.save(protein);
-    mongoProteinIdentificationIndexService.deleteByProjectAccession(protein.getProjectAccession());
+    mongoProjectProteinIdentificationsIndexer.deleteAllProteinsForProject(
+        protein.getProjectAccession());
     mongoProteinIdentificationIndexService.save(protein);
-    mongoProteinIdentificationIndexService.deleteByAssayAccession(protein.getAssayAccession());
+    mongoProjectProteinIdentificationsIndexer.deleteAllProteinsForAssay(
+        protein.getAssayAccession());
+    mongoProteinIdentificationIndexService.save(protein);
   }
 }

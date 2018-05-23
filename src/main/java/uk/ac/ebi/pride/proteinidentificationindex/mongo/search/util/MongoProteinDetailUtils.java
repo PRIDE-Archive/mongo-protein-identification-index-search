@@ -4,15 +4,14 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-/**
- * Extracts protein detail information.
- */
+/** Extracts protein detail information. */
 public class MongoProteinDetailUtils {
 
   public static final String NAME = "NAME####";
 
   /**
    * Extracts protein detail information for a specified type.
+   *
    * @param description the description to look through
    * @param type the type to find
    * @return the information according to the type found in the description
@@ -33,6 +32,7 @@ public class MongoProteinDetailUtils {
 
   /**
    * Helper method to find the name in the description
+   *
    * @param description the description to look through
    * @return the name, if one is present.
    */

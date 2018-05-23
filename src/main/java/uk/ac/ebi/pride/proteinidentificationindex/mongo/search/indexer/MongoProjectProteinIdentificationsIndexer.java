@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.indexer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.proteincatalogindex.search.model.ProteinIdentified;
 import uk.ac.ebi.pride.proteincatalogindex.search.service.ProteinCatalogSearchService;
@@ -21,6 +22,8 @@ public class MongoProjectProteinIdentificationsIndexer {
   @Resource private MongoProteinIdentificationSearchService mongoProteinIdentificationSearchService;
   @Resource private MongoProteinIdentificationIndexService mongoProteinIdentificationIndexService;
   @Resource private ProteinCatalogSearchService proteinCatalogSearchService;
+
+  private static final int MAX_PAGE_SIZE = 1000;
 
   /**
    * Constructor, sets the search, index, and catalog services.
@@ -87,17 +90,6 @@ public class MongoProjectProteinIdentificationsIndexer {
   }
 
   /**
-   * Deletes all protein identifications for a given project accession
-   *
-   * @param projectAccession The accession that identifies the PRIDE Archive project
-   */
-  public void deleteAllProteinIdentificationsForProject(String projectAccession) {
-    List<MongoProteinIdentification> mongoProteinIdentifications =
-        this.mongoProteinIdentificationSearchService.findByProjectAccession(projectAccession);
-    this.mongoProteinIdentificationIndexService.delete(mongoProteinIdentifications);
-  }
-
-  /**
    * Use the protein Catalog to retrieve synonym information, protein details, etc.
    *
    * @param mongoProteinIdentifications The list to be enriched with information from the Catalog
@@ -147,7 +139,49 @@ public class MongoProjectProteinIdentificationsIndexer {
     mongoProteinIdentification.setInferredSequence(proteinFromCatalog.getInferredSequence());
   }
 
+  /**
+   * Deletes all proteins for a project by project accession.
+   *
+   * @param projectAccession the project's accession number to delete proteins
+   */
+  public void deleteAllProteinsForProject(String projectAccession) {
+    long proteinCount =
+        mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
+    List<MongoProteinIdentification> initialProteinsFound;
+    while (0 < proteinCount) {
+      for (int i = 0; i < (proteinCount / MAX_PAGE_SIZE) + 1; i++) {
+        initialProteinsFound =
+            mongoProteinIdentificationSearchService
+                .findByProjectAccession(projectAccession, PageRequest.of(i, MAX_PAGE_SIZE))
+                .getContent();
+        mongoProteinIdentificationIndexService.delete(initialProteinsFound);
+      }
+      proteinCount =
+          mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
+    }
+  }
+
+  /**
+   * Deletes all proteins for a project by assay accession.
+   *
+   * @param assayAccession the assay number to delete proteins
+   */
+  public void deleteAllProteinsForAssay(String assayAccession) {
+    long proteinCount =
+        mongoProteinIdentificationSearchService.countByAssayAccession(assayAccession);
+    List<MongoProteinIdentification> initialPsmsFound;
+    while (0 < proteinCount) {
+      for (int i = 0; i < (proteinCount / MAX_PAGE_SIZE) + 1; i++) {
+        initialPsmsFound =
+            mongoProteinIdentificationSearchService
+                .findByAssayAccession(assayAccession, PageRequest.of(i, MAX_PAGE_SIZE))
+                .getContent();
+        mongoProteinIdentificationIndexService.delete(initialPsmsFound);
+      }
+      proteinCount = mongoProteinIdentificationSearchService.countByAssayAccession(assayAccession);
+    }
+  }
+
   // todo javadoc
   // todo coverage
-  // todo delete all proteins for project/assay with paging
 }

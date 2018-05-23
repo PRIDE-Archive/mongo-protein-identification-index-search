@@ -27,12 +27,10 @@ public class MongoProteinIdentificationIndexService {
     this.mongoProteinIdentificationRepository = mongoProteinIdentificationRepository;
   }
 
-  @Transactional
   public void save(MongoProteinIdentification mongoProteinIdentification) {
     mongoProteinIdentificationRepository.save(mongoProteinIdentification);
   }
 
-  @Transactional
   public void save(Collection<MongoProteinIdentification> mongoProteinIdentifications) {
     if (CollectionUtils.isEmpty(mongoProteinIdentifications)) log.debug("No PSMs to save");
     else {
@@ -43,48 +41,22 @@ public class MongoProteinIdentificationIndexService {
     }
   }
 
-  @Transactional
   public void delete(MongoProteinIdentification mongoProteinIdentification) {
     mongoProteinIdentificationRepository.delete(mongoProteinIdentification);
   }
 
-  @Transactional
   public void deleteById(String id) {
     mongoProteinIdentificationRepository.deleteById(id);
   }
 
-  @Transactional
   public void delete(Collection<MongoProteinIdentification> mongoProteinIdentifications) {
     mongoProteinIdentificationRepository.deleteAll(mongoProteinIdentifications);
   }
 
-  @Transactional
   public void deleteByIds(Collection<String> ids) {
     for (String id : ids) {
       mongoProteinIdentificationRepository.deleteById(id);
     }
-  }
-
-  /**
-   * Deletes all proteins in Mongo for a project.
-   *
-   * @param projectAccession the project's accession number to delete proteins
-   */
-  @Transactional
-  public void deleteByProjectAccession(String projectAccession) {
-    mongoProteinIdentificationRepository.deleteAll(
-        mongoProteinIdentificationRepository.findByProjectAccession(projectAccession));
-  }
-
-  /**
-   * Deletes all proteins in Mongo for a project's assay.
-   *
-   * @param assayAccession the project's assay accession number to delete proteins
-   */
-  @Transactional
-  public void deleteByAssayAccession(String assayAccession) {
-    mongoProteinIdentificationRepository.deleteAll(
-        mongoProteinIdentificationRepository.findByAssayAccession(assayAccession));
   }
 
   /**

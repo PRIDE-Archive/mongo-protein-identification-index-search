@@ -1,8 +1,8 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import uk.ac.ebi.pride.indexutils.helpers.ModificationHelper;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.jmztab.model.Modification;
@@ -15,16 +15,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+@Slf4j
 public class MongoProteinIdentificationMzTabBuilder {
 
   public static String OPTIONAL_SEQUENCE_COLUMN = "protein_sequence";
-  private static Logger logger =
-      LoggerFactory.getLogger(MongoProteinIdentificationMzTabBuilder.class.getName());
 
   public static List<MongoProteinIdentification> readProteinIdentificationsFromMzTabFile(
       String projectAccession, String assayAccession, MZTabFile tabFile) {
     List<MongoProteinIdentification> result = new LinkedList<>();
-    String sequence;
     if (tabFile != null) {
       Collection<Protein> mzTabProteins = tabFile.getProteins();
       for (Protein mzTabProtein : mzTabProteins) {
@@ -37,11 +35,10 @@ public class MongoProteinIdentificationMzTabBuilder {
         mongoProteinIdentification.setAssayAccession(assayAccession);
         mongoProteinIdentification.setProjectAccession(projectAccession);
         mongoProteinIdentification.setAmbiguityGroupSubmittedAccessions(new LinkedList<>());
-        if ((sequence = mzTabProtein.getOptionColumnValue(OPTIONAL_SEQUENCE_COLUMN)) != null) {
-          if (!sequence.isEmpty()) {
-            mongoProteinIdentification.setSubmittedSequence(sequence);
-            logger.debug("Retrieved submitted sequence");
-          }
+        String sequence = mzTabProtein.getOptionColumnValue(OPTIONAL_SEQUENCE_COLUMN);
+        if (!StringUtils.isEmpty(sequence)) {
+          mongoProteinIdentification.setSubmittedSequence(sequence);
+          log.debug("Retrieved submitted sequence");
         }
         if (mzTabProtein.getAmbiguityMembers() != null
             && mzTabProtein.getAmbiguityMembers().size() > 0
@@ -61,37 +58,37 @@ public class MongoProteinIdentificationMzTabBuilder {
               getCorrectedAccession(mzTabProtein.getAccession(), mzTabProtein.getDatabase());
           mongoProteinIdentification.setAccession(correctedAccession);
         } catch (Exception e) {
-          logger.error(
+          log.error(
               "Cannot correct protein accession "
                   + mzTabProtein.getAccession()
                   + " with DB "
                   + mzTabProtein.getDatabase());
-          logger.error("Original accession will be used");
-          logger.error("Cause:" + e.getCause());
+          log.error("Original accession will be used");
+          log.error("Cause:" + e.getCause());
           mongoProteinIdentification.setAccession(mzTabProtein.getAccession());
         }
         result.add(mongoProteinIdentification);
       }
-      logger.debug(
+      log.debug(
           "Found "
               + result.size()
               + " protein identifications for Assay "
               + assayAccession
               + " in file.");
     } else {
-      logger.error("Passed null mzTab file to protein identifications reader");
+      log.error("Passed null mzTab file to protein identifications reader");
     }
     return result;
   }
 
   private static String getCorrectedAccession(String accession, String database) {
+    String result;
     try {
       AccessionResolver accessionResolver =
           new AccessionResolver(accession, null, database); // we don't have versions
       String fixedAccession = accessionResolver.getAccession();
-
-      if (fixedAccession == null || "".equals(fixedAccession)) {
-        logger.debug(
+      if (StringUtils.isEmpty(fixedAccession)) {
+        log.debug(
             "No proper fix found for accession "
                 + accession
                 + ". Obtained: <"
@@ -99,16 +96,17 @@ public class MongoProteinIdentificationMzTabBuilder {
                 + ">. Original accession will be used.");
         return accession;
       } else {
-        logger.debug("Original accession " + accession + " fixed to " + fixedAccession);
-        return fixedAccession;
+        log.debug("Original accession " + accession + " fixed to " + fixedAccession);
+        result = fixedAccession;
       }
     } catch (Exception e) {
-      logger.error(
+      log.error(
           "There were problems getting corrected accession for "
               + accession
               + ". Original accession will be used.");
-      return accession;
+      result = accession;
     }
+    return result;
   }
 
   // todo javadoc
