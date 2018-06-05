@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.indexer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import uk.ac.ebi.pride.jmztab.model.MZTabFile;
 import uk.ac.ebi.pride.proteincatalogindex.search.model.ProteinIdentified;
 import uk.ac.ebi.pride.proteincatalogindex.search.service.ProteinCatalogSearchService;
@@ -67,6 +68,22 @@ public class MongoProjectProteinIdentificationsIndexer {
   public void deleteAllProteinIdentificationsForProject(String projectAccession) {
     List<MongoProteinIdentification> mongoProteinIdentifications = this.mongoProteinIdentificationSearchService.findByProjectAccession(projectAccession);
     this.mongoProteinIdentificationIndexService.delete(mongoProteinIdentifications);
+
+    int MAX_PAGE_SIZE = 1000;
+    long proteinCount =
+        mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
+    List<MongoProteinIdentification> initialProteinsFound;
+    while (0 < proteinCount) {
+      for (int i = 0; i < (proteinCount / MAX_PAGE_SIZE) + 1; i++) {
+        initialProteinsFound =
+            mongoProteinIdentificationSearchService
+                .findByProjectAccession(projectAccession, new PageRequest(i, MAX_PAGE_SIZE))
+                .getContent();
+        mongoProteinIdentificationIndexService.delete(initialProteinsFound);
+      }
+      proteinCount =
+          mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
+    }
   }
 
   /**

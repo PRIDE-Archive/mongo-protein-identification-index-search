@@ -1,6 +1,8 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,10 @@ public class MongoProteinIdentificationSearchService {
 
   public List<MongoProteinIdentification> findByProjectAccession(String projectAccession) {
     return mongoProteinIdentificationRepository.findByProjectAccession(projectAccession);
+  }
+
+  public Page<MongoProteinIdentification> findByProjectAccession(String projectAccession, Pageable pageable) {
+    return mongoProteinIdentificationRepository.findByProjectAccession(projectAccession, pageable);
   }
 
   public long countByProjectAccession(String projectAccession) {

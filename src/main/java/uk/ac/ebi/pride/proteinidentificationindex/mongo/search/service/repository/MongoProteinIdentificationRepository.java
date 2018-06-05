@@ -1,6 +1,8 @@
 package uk.ac.ebi.pride.proteinidentificationindex.mongo.search.service.repository;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -17,5 +19,6 @@ public interface MongoProteinIdentificationRepository extends MongoRepository<Mo
   List<MongoProteinIdentification> findByIdIn(Collection<String> id, Sort sort);
 
   List<MongoProteinIdentification> findByProjectAccession(String projectAccession);
+  Page<MongoProteinIdentification> findByProjectAccession(String projectAccession, Pageable pageable);
   long countByProjectAccession(String projectAccession);
 }
