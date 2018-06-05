@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride</groupId>
     <artifactId>mongo-protein-identification-index-search</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>mongo-protein-identification-index-search</name>
     <url>https://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
 
@@ -313,7 +313,7 @@
         <connection>scm:git:https://github.com/PRIDE-Archive/mongo-protein-identification-index-search.git</connection>
         <developerConnection>scm:git:https://github.com/PRIDE-Archive/mongo-protein-identification-index-search.git</developerConnection>
         <url>hhttps://github.com/PRIDE-Archive/mongo-protein-identification-index-search</url>
-        <tag>HEAD</tag>
+        <tag>mongo-protein-identification-index-search-1.0.3</tag>
     </scm>
 
 </project>
