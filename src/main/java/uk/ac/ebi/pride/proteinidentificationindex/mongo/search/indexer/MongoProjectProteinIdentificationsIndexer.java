@@ -68,21 +68,22 @@ public class MongoProjectProteinIdentificationsIndexer {
   public void deleteAllProteinIdentificationsForProject(String projectAccession) {
     List<MongoProteinIdentification> mongoProteinIdentifications = this.mongoProteinIdentificationSearchService.findByProjectAccession(projectAccession);
     this.mongoProteinIdentificationIndexService.delete(mongoProteinIdentifications);
-
+    logger.info("Starting to delete proteins");
     int MAX_PAGE_SIZE = 1000;
     long proteinCount =
         mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
     List<MongoProteinIdentification> initialProteinsFound;
-    while (0 < proteinCount) {
+    logger.info("Found " + proteinCount + " proteins to delete");
+    if (0 < proteinCount) {
       for (int i = 0; i < (proteinCount / MAX_PAGE_SIZE) + 1; i++) {
         initialProteinsFound =
             mongoProteinIdentificationSearchService
                 .findByProjectAccession(projectAccession, new PageRequest(i, MAX_PAGE_SIZE))
                 .getContent();
+        logger.info("Deleting proteins page: " + i + " of " + (proteinCount / MAX_PAGE_SIZE));
         mongoProteinIdentificationIndexService.delete(initialProteinsFound);
       }
-      proteinCount =
-          mongoProteinIdentificationSearchService.countByProjectAccession(projectAccession);
+      logger.info("Finished deleting all proteins pages.");
     }
   }
 
